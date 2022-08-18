@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Foundation
+import AVFoundation
 
 class ViewController: UIViewController {
     
@@ -38,6 +40,20 @@ class ViewController: UIViewController {
         }else{
             timer.invalidate()
             titleLabel.text = "Done"
+            guard let soundFileURL = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
+            else {
+                return
+            }
+            
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+                try AVAudioSession.sharedInstance().setActive(true)
+                
+                let player = try AVAudioPlayer(contentsOf: soundFileURL)
+                player.play()
+            } catch {
+                print("Failed to set audio")
+            }
         }
 
 
